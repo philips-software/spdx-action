@@ -1,0 +1,39 @@
+name: 'Get SPDX license overview'
+description: 'Get SPDX license overview'
+author: "Forest Keepers"
+branding:
+  icon: "activity"
+  color: "green"
+
+outputs:
+  spdx-file:
+    description: "spdx-license file"
+    value: ${{ steps.spdx.outputs.spdx-file }}
+
+inputs:
+  project:
+    description: "project"
+    required: false
+    default: 'spdx-builder'
+  spdx-builder-version:
+    description: "spdx-builder-version"
+    required: false
+    default: 'v0.4.0'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Scan with ORT 
+      run: |
+        # Allow ORT to fail. When one repository can't be found, the rest still makes sense to analyse 
+        set +e
+        docker run -v ${{ github.workspace }}:/project philipssoftware/ort --info analyze -f JSON -i /project -o /project/ort
+        set -e
+      shell: bash
+    - name: Create SPDX file
+      id: spdx
+      run: |
+        curl https://github.com/philips-software/spdx-builder/releases/download/{{ inputs.spdx-builder-version }}/spdx-builder.jar
+        java -jar spdx-builder.jar -c .spdx-builder.yml -o ${{ inputs.project}}.spdx ort/analyzer-result.json
+        echo "::set-output name=spdx-file::${{ inputs.project }}.spdx"
+      shell: bash
