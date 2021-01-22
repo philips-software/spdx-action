@@ -33,7 +33,7 @@ This action requires a java environment. (See example)
       java-version: '11.0.1'
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.1.0
+    uses: philips-software/spdx-action@v0.1.1
     with:
       project: my-project
   - uses: actions/upload-artifact@v2
