@@ -29,6 +29,9 @@ runs:
     - name: Scan with ORT 
       run: |
         # Allow ORT to fail. When one repository can't be found, the rest still makes sense to analyse 
+        echo "--------------------------------------------------------------------"
+        echo " Running ORT scanner"
+        echo "--------------------------------------------------------------------"
         set +e
         docker run -v ${{ github.workspace }}:/project philipssoftware/ort --info analyze -f JSON -i /project -o /project/ort
         set -e
@@ -36,8 +39,26 @@ runs:
     - name: Create SPDX file
       id: spdx
       run: |
+        echo "--------------------------------------------------------------------"
+        echo " Creating SPDX file for ${PROJECT}. "
+        echo "--------------------------------------------------------------------"
+        echo " Inputs: "
+        echo "    PROJECT    : ${PROJECT} "
+        echo "    SCANNER_URL: ${SCANNER_URL} "
+        echo "--------------------------------------------------------------------"
+        echo ""
+        echo "--------------------------------------------------------------------"
+        echo " Downloading spdx-builder"
+        echo "--------------------------------------------------------------------"
         curl -L https://github.com/philips-software/spdx-builder/releases/download/${{ inputs.spdx-builder-version }}/spdx-builder.jar -o spdx-builder.jar
-        ./bin/run.sh
+        echo "--------------------------------------------------------------------"
+        echo " Running SPDX-builder"
+        echo "--------------------------------------------------------------------"
+        java -jar spdx-builder.jar -c .spdx-builder.yml -o ${PROJECT}.spdx ort/analyzer-result.json
+        echo "--------------------------------------------------------------------"
+        echo "Finished!"
+        echo "--------------------------------------------------------------------"
+        echo "::set-output name=spdx-file::${PROJECT}.spdx"
       env:
         PROJECT: ${{ inputs.project }}
         SCANNER_URL: ${{ inputs.scanner-url }}
