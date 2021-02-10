@@ -19,6 +19,9 @@ inputs:
     description: "spdx-builder-version"
     required: false
     default: 'v0.4.0'
+  scanner-url:
+    description: "scanner-url (license-scanner)"
+    required: false
 
 runs:
   using: "composite"
