@@ -30,26 +30,9 @@ Get SPDX license overview
 | ort-version | philipssoftware/ort version | `false` | 2021-03-03 |
 | ort-file | Specifies an ort-file to override ORT scanning in this action. | `false` |  |
 
-
-
 <!-- action-docs-inputs -->
 
 <!-- action-docs-outputs -->
-## Outputs
-
-| parameter | description |
-| - | - |
-| spdx-file | spdx-license file |
-
-
-
-<!-- action-docs-outputs -->
-
-<!-- action-docs-runs -->
-## Runs
-
-This action is an `composite` action.
-
 
 <!-- action-docs-runs -->
 
