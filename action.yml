@@ -37,6 +37,8 @@ runs:
       id: spdx
       run: |
         curl -L https://github.com/philips-software/spdx-builder/releases/download/${{ inputs.spdx-builder-version }}/spdx-builder.jar -o spdx-builder.jar
-        java -jar spdx-builder.jar -c .spdx-builder.yml -o ${{ inputs.project}}.spdx ort/analyzer-result.json
-        echo "::set-output name=spdx-file::${{ inputs.project }}.spdx"
+        ./bin/run.sh
+      environment:
+        PROJECT: ${{ inputs.project }}
+        SCANNER_URL: ${{ inputs.scanner-url }}
       shell: bash
