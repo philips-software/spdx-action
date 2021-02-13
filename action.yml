@@ -19,6 +19,9 @@ inputs:
     description: "spdx-builder-version"
     required: false
     default: 'v0.4.0'
+  scanner-url:
+    description: "scanner-url (license-scanner)"
+    required: false
   ort-version:
     description: "philipssoftware/ort version"
     required: true
@@ -30,6 +33,9 @@ runs:
     - name: Scan with ORT 
       run: |
         # Allow ORT to fail. When one repository can't be found, the rest still makes sense to analyse 
+        echo "--------------------------------------------------------------------"
+        echo " Running ORT scanner"
+        echo "--------------------------------------------------------------------"
         set +e
         docker run -v ${{ github.workspace }}:/project philipssoftware/ort:${{ inputs.ort-version}} --info analyze -f JSON -i /project -o /project/ort
         set -e
@@ -37,7 +43,31 @@ runs:
     - name: Create SPDX file
       id: spdx
       run: |
+        echo "--------------------------------------------------------------------"
+        echo " Creating SPDX file for ${PROJECT}. "
+        echo "--------------------------------------------------------------------"
+        echo " Inputs: "
+        echo "    PROJECT    : ${PROJECT} "
+        echo "    SCANNER_URL: ${SCANNER_URL} "
+        echo "--------------------------------------------------------------------"
+        echo ""
+        echo "--------------------------------------------------------------------"
+        echo " Downloading spdx-builder"
+        echo "--------------------------------------------------------------------"
         curl -L https://github.com/philips-software/spdx-builder/releases/download/${{ inputs.spdx-builder-version }}/spdx-builder.jar -o spdx-builder.jar
-        java -jar spdx-builder.jar -c .spdx-builder.yml -o ${{ inputs.project}}.spdx ort/analyzer-result.json
-        echo "::set-output name=spdx-file::${{ inputs.project }}.spdx"
+        echo "--------------------------------------------------------------------"
+        echo " Set SCANNER_ARG"
+        echo "--------------------------------------------------------------------"
+        [ -z "$SCANNER_URL" ] && SCANNER_ARG="" || SCANNER_ARG="--scanner ${SCANNER_URL}"
+        echo "--------------------------------------------------------------------"
+        echo " Running SPDX-builder"
+        echo "--------------------------------------------------------------------"
+        java -jar spdx-builder.jar -c .spdx-builder.yml -o ${PROJECT}.spdx ort/analyzer-result.json ${SCANNER_ARG}
+        echo "--------------------------------------------------------------------"
+        echo "Finished!"
+        echo "--------------------------------------------------------------------"
+        echo "::set-output name=spdx-file::${PROJECT}.spdx"
+      env:
+        PROJECT: ${{ inputs.project }}
+        SCANNER_URL: ${{ inputs.scanner-url }}
       shell: bash

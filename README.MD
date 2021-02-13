@@ -17,6 +17,7 @@ This action requires a java environment. (See example)
 | --------------------- | :---------------------------------------------------------- | -------- | ------------ |
 | project               | Project-name, used for output-file-name                     | no       | spdx-builder |
 | spdx-builder-version  | Version of spdx-builder                                     | no       | v0.4.0       |
+| scanner-url           | scanner-url (license-scanner)                               | no       |              |
 | ort-version           | Version of philipssoftware/ort docker container             | no       | latest       |
 
 ## Action output parameters
