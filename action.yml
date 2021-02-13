@@ -22,6 +22,10 @@ inputs:
   scanner-url:
     description: "scanner-url (license-scanner)"
     required: false
+  ort-version:
+    description: "philipssoftware/ort version"
+    required: true
+    default: 'latest'
 
 runs:
   using: "composite"
@@ -33,7 +37,7 @@ runs:
         echo " Running ORT scanner"
         echo "--------------------------------------------------------------------"
         set +e
-        docker run -v ${{ github.workspace }}:/project philipssoftware/ort --info analyze -f JSON -i /project -o /project/ort
+        docker run -v ${{ github.workspace }}:/project philipssoftware/ort:${{ inputs.ort-version}} --info analyze -f JSON -i /project -o /project/ort
         set -e
       shell: bash
     - name: Create SPDX file
