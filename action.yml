@@ -19,6 +19,10 @@ inputs:
     description: "spdx-builder-version"
     required: false
     default: 'v0.4.0'
+  ort-version:
+    description: "philipssoftware/ort version"
+    required: true
+    default: 'latest'
 
 runs:
   using: "composite"
@@ -27,7 +31,7 @@ runs:
       run: |
         # Allow ORT to fail. When one repository can't be found, the rest still makes sense to analyse 
         set +e
-        docker run -v ${{ github.workspace }}:/project philipssoftware/ort --info analyze -f JSON -i /project -o /project/ort
+        docker run -v ${{ github.workspace }}:/project philipssoftware/ort:${{ input.ort-version}} --info analyze -f JSON -i /project -o /project/ort
         set -e
       shell: bash
     - name: Create SPDX file
