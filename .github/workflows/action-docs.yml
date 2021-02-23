@@ -1,0 +1,24 @@
+name: 'Action docs'
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - action-docs
+    pull_request:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: npalm/action-docs-action@v1.0.0
+
+      - name: Update readme in the repository
+        if: github.event_name != 'pull_request'
+        uses: stefanzweifel/git-auto-commit-action@v4.8.0
+        with:
+          commit_message: "chore(ci): Updating readme"
+          file_pattern: README.md
+

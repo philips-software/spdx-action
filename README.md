@@ -11,20 +11,13 @@ See [instructions in philips-internal/spdx-builder](https://github.com/philips-s
 ## Environment
 This action requires a java environment. (See example)
 
-## Action input parameters
+<!-- terraform-docs-description -->
 
-| Parameter             | Description                                                 | required | default      |
-| --------------------- | :---------------------------------------------------------- | -------- | ------------ |
-| project               | Project-name, used for output-file-name                     | no       | spdx-builder |
-| spdx-builder-version  | Version of spdx-builder                                     | no       | v0.4.0       |
-| scanner-url           | scanner-url (license-scanner)                               | no       |              |
-| ort-version           | Version of philipssoftware/ort docker container             | no       | latest       |
+<!-- terraform-docs-inputs -->
 
-## Action output parameters
+<!-- terraform-docs-outputs -->
 
-| Parameter             | Description                                                 |
-| --------------------- | :---------------------------------------------------------- |
-| spdx-file             | filename with spdx output                                   |
+<!-- terraform-docs-run -->
 
 ## GitHub workflow
 
