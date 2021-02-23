@@ -12,8 +12,35 @@ See [instructions in philips-internal/spdx-builder](https://github.com/philips-s
 This action requires a java environment. (See example)
 
 <!-- terraform-docs-description -->
+## Description
+
+Get SPDX license overview
+
+
+<!-- terraform-docs-description -->
 
 <!-- terraform-docs-inputs -->
+## Inputs
+
+| parameter | description | required | default |
+| - | - | - | - |
+| project | project | `false` | spdx-builder |
+| spdx-builder-version | spdx-builder-version | `false` | v0.4.0 |
+| scanner-url | scanner-url (license-scanner) | `false` |  |
+| ort-version | philipssoftware/ort version | `true` | latest |
+
+
+
+<!-- terraform-docs-inputs -->
+
+<!-- terraform-docs-outputs -->
+## Outputs
+
+| parameter | description |
+| - | - |
+| spdx-file | spdx-license file |
+
+
 
 <!-- terraform-docs-outputs -->
 
