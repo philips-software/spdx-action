@@ -11,20 +11,40 @@ See [instructions in philips-internal/spdx-builder](https://github.com/philips-s
 ## Environment
 This action requires a java environment. (See example)
 
-## Action input parameters
+<!-- terraform-docs-description -->
+## Description
 
-| Parameter             | Description                                                 | required | default      |
-| --------------------- | :---------------------------------------------------------- | -------- | ------------ |
-| project               | Project-name, used for output-file-name                     | no       | spdx-builder |
-| spdx-builder-version  | Version of spdx-builder                                     | no       | v0.4.0       |
-| scanner-url           | scanner-url (license-scanner)                               | no       |              |
-| ort-version           | Version of philipssoftware/ort docker container             | no       | latest       |
+Get SPDX license overview
 
-## Action output parameters
 
-| Parameter             | Description                                                 |
-| --------------------- | :---------------------------------------------------------- |
-| spdx-file             | filename with spdx output                                   |
+<!-- terraform-docs-description -->
+
+<!-- terraform-docs-inputs -->
+## Inputs
+
+| parameter | description | required | default |
+| - | - | - | - |
+| project | project | `false` | spdx-builder |
+| spdx-builder-version | spdx-builder-version | `false` | v0.4.0 |
+| scanner-url | scanner-url (license-scanner) | `false` |  |
+| ort-version | philipssoftware/ort version | `true` | latest |
+
+
+
+<!-- terraform-docs-inputs -->
+
+<!-- terraform-docs-outputs -->
+## Outputs
+
+| parameter | description |
+| - | - |
+| spdx-file | spdx-license file |
+
+
+
+<!-- terraform-docs-outputs -->
+
+<!-- terraform-docs-run -->
 
 ## GitHub workflow
 
