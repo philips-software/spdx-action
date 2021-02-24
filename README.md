@@ -45,6 +45,12 @@ Get SPDX license overview
 <!-- action-docs-outputs -->
 
 <!-- action-docs-runs -->
+## Runs
+
+This action is an `composite` action.
+
+
+<!-- action-docs-runs -->
 
 ## GitHub workflow
 
