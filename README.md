@@ -11,15 +11,15 @@ See [instructions in philips-internal/spdx-builder](https://github.com/philips-s
 ## Environment
 This action requires a java environment. (See example)
 
-<!-- terraform-docs-description -->
+<!-- action-docs-description -->
 ## Description
 
 Get SPDX license overview
 
 
-<!-- terraform-docs-description -->
+<!-- action-docs-description -->
 
-<!-- terraform-docs-inputs -->
+<!-- action-docs-inputs -->
 ## Inputs
 
 | parameter | description | required | default |
@@ -31,9 +31,9 @@ Get SPDX license overview
 
 
 
-<!-- terraform-docs-inputs -->
+<!-- action-docs-inputs -->
 
-<!-- terraform-docs-outputs -->
+<!-- action-docs-outputs -->
 ## Outputs
 
 | parameter | description |
@@ -42,9 +42,9 @@ Get SPDX license overview
 
 
 
-<!-- terraform-docs-outputs -->
+<!-- action-docs-outputs -->
 
-<!-- terraform-docs-run -->
+<!-- action-docs-runs -->
 
 ## GitHub workflow
 
