@@ -44,7 +44,7 @@ Get SPDX license overview
 
 <!-- action-docs-outputs -->
 
-<!-- action-docs-run -->
+<!-- action-docs-runs -->
 
 ## GitHub workflow
 
