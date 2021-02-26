@@ -24,14 +24,18 @@ inputs:
     required: false
   ort-version:
     description: "philipssoftware/ort version"
-    required: true
+    required: false
     default: 'latest'
+  ort-file:
+    description: "Specifies an ort-file to override ORT scanning in this action."
+    required: false
 
 runs:
   using: "composite"
   steps:
     - name: Scan with ORT 
       run: |
+        [ -n "${ORT_FILE}" ] && echo "We have our own ORT_FILE so we don't need to scan it here"; exit 0
         # Allow ORT to fail. When one repository can't be found, the rest still makes sense to analyse 
         echo "--------------------------------------------------------------------"
         echo " Running ORT scanner"
@@ -40,6 +44,8 @@ runs:
         docker run -v ${{ github.workspace }}:/project philipssoftware/ort:${{ inputs.ort-version}} --info analyze -f JSON -i /project -o /project/ort
         set -e
       shell: bash
+      env:
+        ORT_FILE: ${{ inputs.ort-file }}
     - name: Create SPDX file
       id: spdx
       run: |
@@ -47,8 +53,9 @@ runs:
         echo " Creating SPDX file for ${PROJECT}. "
         echo "--------------------------------------------------------------------"
         echo " Inputs: "
-        echo "    PROJECT    : ${PROJECT} "
-        echo "    SCANNER_URL: ${SCANNER_URL} "
+        echo "    PROJECT              : ${PROJECT} "
+        echo "    SCANNER_URL          : ${SCANNER_URL} "
+        echo "    ORT_FILE             : ${ORT_FILE} "
         echo "--------------------------------------------------------------------"
         echo ""
         echo "--------------------------------------------------------------------"
@@ -59,10 +66,16 @@ runs:
         echo " Set SCANNER_ARG"
         echo "--------------------------------------------------------------------"
         [ -z "$SCANNER_URL" ] && SCANNER_ARG="" || SCANNER_ARG="--scanner ${SCANNER_URL}"
+        echo "          SCANNER_ARG: ${SCANNER_ARG}"
+        echo "--------------------------------------------------------------------"
+        echo " Set input-file"
+        echo "--------------------------------------------------------------------"
+        [ -n "$ORT_FILE" ] && INPUT_FILE=${ORT_FILE} || INPUT_FILE="ort/analyzer-result.json"
+        echo "          INPUT_FILE: ${INPUT_FILE}"
         echo "--------------------------------------------------------------------"
         echo " Running SPDX-builder"
         echo "--------------------------------------------------------------------"
-        java -jar spdx-builder.jar -c .spdx-builder.yml -o ${PROJECT}.spdx ort/analyzer-result.json ${SCANNER_ARG}
+        java -jar spdx-builder.jar -c .spdx-builder.yml -o ${PROJECT}.spdx ${INPUT_FILE} ${SCANNER_ARG}
         echo "--------------------------------------------------------------------"
         echo "Finished!"
         echo "--------------------------------------------------------------------"
@@ -70,4 +83,5 @@ runs:
       env:
         PROJECT: ${{ inputs.project }}
         SCANNER_URL: ${{ inputs.scanner-url }}
+        ORT_FILE: ${{ inputs.ort-file }}
       shell: bash
