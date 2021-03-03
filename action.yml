@@ -25,7 +25,7 @@ inputs:
   ort-version:
     description: "philipssoftware/ort version"
     required: false
-    default: 'latest'
+    default: '2021-03-03'
   ort-file:
     description: "Specifies an ort-file to override ORT scanning in this action."
     required: false
