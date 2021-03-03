@@ -27,7 +27,7 @@ Get SPDX license overview
 | project | project | `false` | spdx-builder |
 | spdx-builder-version | spdx-builder-version | `false` | v0.4.0 |
 | scanner-url | scanner-url (license-scanner) | `false` |  |
-| ort-version | philipssoftware/ort version | `false` | latest |
+| ort-version | philipssoftware/ort version | `false` | 2021-03-03 |
 | ort-file | Specifies an ort-file to override ORT scanning in this action. | `false` |  |
 
 
