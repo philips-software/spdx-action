@@ -35,7 +35,7 @@ runs:
   steps:
     - name: Scan with ORT 
       run: |
-        [ -n "${ORT_FILE}" ] && echo "We have our own ORT_FILE so we don't need to scan it here"; exit 0
+        [ -n "${ORT_FILE}" ] && { echo "We have our own ORT_FILE so we don't need to scan it here"; exit 0 }
         # Allow ORT to fail. When one repository can't be found, the rest still makes sense to analyse 
         echo "--------------------------------------------------------------------"
         echo " Running ORT scanner"
