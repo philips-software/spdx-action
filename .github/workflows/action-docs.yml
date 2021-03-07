@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: npalm/action-docs-action@v1.0.0
+      - uses: npalm/action-docs-action@v1.1.0
 
       - name: Update readme in the repository
         if: github.event_name != 'pull_request'
