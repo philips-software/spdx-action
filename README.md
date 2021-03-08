@@ -26,13 +26,31 @@ Get SPDX license overview
 | - | - | - | - |
 | project | project | `false` | spdx-builder |
 | spdx-builder-version | spdx-builder-version | `false` | v0.4.0 |
-| scanner-url | scanner-url (license-scanner) | `false` |  |
 | ort-version | philipssoftware/ort version | `false` | 2021-03-03 |
-| ort-file | Specifies an ort-file to override ORT scanning in this action. | `false` |  |
+| ort-file | Specifies an ort-file to override ORT scanning in this action. | `true` | latest |
+| scanner-url | scanner-url (license-scanner) | `false` |  |
+| upload-url | upload-url (f.e. BOM-bar) | `false` |  |
+
+
 
 <!-- action-docs-inputs -->
 
 <!-- action-docs-outputs -->
+## Outputs
+
+| parameter | description |
+| - | - |
+| spdx-file | spdx-license file |
+
+
+
+<!-- action-docs-outputs -->
+
+<!-- action-docs-runs -->
+## Runs
+
+This action is an `composite` action.
+
 
 <!-- action-docs-runs -->
 
