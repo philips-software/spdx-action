@@ -19,15 +19,19 @@ inputs:
     description: "spdx-builder-version"
     required: false
     default: 'v0.4.0'
-  scanner-url:
-    description: "scanner-url (license-scanner)"
-    required: false
   ort-version:
     description: "philipssoftware/ort version"
     required: false
     default: '2021-03-03'
   ort-file:
     description: "Specifies an ort-file to override ORT scanning in this action."
+    required: true
+    default: 'latest'
+  scanner-url:
+    description: "scanner-url (license-scanner)"
+    required: false
+  upload-url:
+    description: "upload-url (f.e. BOM-bar)"
     required: false
 
 runs:
@@ -55,6 +59,7 @@ runs:
         echo " Inputs: "
         echo "    PROJECT              : ${PROJECT} "
         echo "    SCANNER_URL          : ${SCANNER_URL} "
+        echo "    UPLOAD_URL           : ${UPLOAD_URL} "
         echo "    ORT_FILE             : ${ORT_FILE} "
         echo "--------------------------------------------------------------------"
         echo ""
@@ -73,9 +78,13 @@ runs:
         [ -n "$ORT_FILE" ] && INPUT_FILE=${ORT_FILE} || INPUT_FILE="ort/analyzer-result.json"
         echo "          INPUT_FILE: ${INPUT_FILE}"
         echo "--------------------------------------------------------------------"
+        echo " Set UPLOAD_ARG"
+        echo "--------------------------------------------------------------------"
+        [ -z "$UPLOAD_URL" ] && UPLOAD_ARG="" || UPLOAD_ARG="--upload ${UPLOAD_URL}"
+        echo "--------------------------------------------------------------------"
         echo " Running SPDX-builder"
         echo "--------------------------------------------------------------------"
-        java -jar spdx-builder.jar -c .spdx-builder.yml -o ${PROJECT}.spdx ${INPUT_FILE} ${SCANNER_ARG}
+        java -jar spdx-builder.jar -c .spdx-builder.yml -o ${PROJECT}.spdx ${INPUT_FILE} ${SCANNER_ARG} ${UPLOAD_ARG}
         echo "--------------------------------------------------------------------"
         echo "Finished!"
         echo "--------------------------------------------------------------------"
@@ -84,4 +93,5 @@ runs:
         PROJECT: ${{ inputs.project }}
         SCANNER_URL: ${{ inputs.scanner-url }}
         ORT_FILE: ${{ inputs.ort-file }}
+        UPLOAD_URL: ${{ inputs.upload-url }}
       shell: bash
