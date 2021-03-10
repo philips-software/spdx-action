@@ -58,7 +58,7 @@ This action is an `composite` action.
 
 ```yml
   - uses: actions/checkout@v2
-  - uses: action/setup-java@v1
+  - uses: actions/setup-java@v1
     with:
       java-version: '11.0.1'
   - name: Create spdx-file
