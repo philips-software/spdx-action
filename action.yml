@@ -26,7 +26,6 @@ inputs:
   ort-file:
     description: "Specifies an ort-file to override ORT scanning in this action."
     required: true
-    default: 'latest'
   scanner-url:
     description: "scanner-url (license-scanner)"
     required: false
@@ -81,6 +80,7 @@ runs:
         echo " Set UPLOAD_ARG"
         echo "--------------------------------------------------------------------"
         [ -z "$UPLOAD_URL" ] && UPLOAD_ARG="" || UPLOAD_ARG="--upload ${UPLOAD_URL}"
+        echo "          UPLOAD_ARG: ${UPLOAD_ARG}"
         echo "--------------------------------------------------------------------"
         echo " Running SPDX-builder"
         echo "--------------------------------------------------------------------"
