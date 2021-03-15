@@ -2,7 +2,7 @@
 
 # Get SPDX license overview
 
-[![Marketplace](https://img.shields.io/badge/GitHub-Marketplace-green.svg)](https://github.com/marketplace/actions/spdx-action) [![Release](https://img.shields.io/github/release/philips-software/spdx-action.svg)](https://github.com/philips-software/spdx-action/releases)
+[![Marketplace](https://img.shields.io/badge/GitHub-Marketplace-green.svg)](https://github.com/marketplace/actions/get-spdx-license-overview) [![Release](https://img.shields.io/github/release/philips-software/spdx-action.svg)](https://github.com/philips-software/spdx-action/releases)
 
 This action will create a SPDX license overview with ORT and SPDX-builder.
 > THIS IS AN EXPERIMENTAL ACTION
