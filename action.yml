@@ -9,15 +9,18 @@ outputs:
   spdx-file:
     description: "spdx-license file"
     value: ${{ steps.spdx.outputs.spdx-file }}
+  ort-file:
+    description: "ort-license file"
+    value: ${{ steps.spdx.outputs.ort-file }}
 
 inputs:
   project:
     description: "project"
-    required: false
+    required: true
     default: 'spdx-builder'
   spdx-builder-version:
     description: "spdx-builder-version"
-    required: false
+    required: true
     default: 'v0.4.0'
   ort-version:
     description: "philipssoftware/ort version"
@@ -89,6 +92,7 @@ runs:
         echo "Finished!"
         echo "--------------------------------------------------------------------"
         echo "::set-output name=spdx-file::${PROJECT}.spdx"
+        echo "::set-output name=ort-file::${INPUT_FILE}"
       env:
         PROJECT: ${{ inputs.project }}
         SCANNER_URL: ${{ inputs.scanner-url }}
