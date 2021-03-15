@@ -1,12 +1,17 @@
+<div align="center">
+
 # Get SPDX license overview
 
-This action will create a spdx license overview with ORT and spdx-builder.
+[![Marketplace](https://img.shields.io/badge/GitHub-Marketplace-green.svg)](https://github.com/marketplace/actions/spdx-action) [![Release](https://img.shields.io/github/release/philips-software/spdx-action.svg)](https://github.com/philips-software/spdx-action/releases)
 
+This action will create a SPDX license overview with ORT and SPDX-builder.
 > THIS IS AN EXPERIMENTAL ACTION
+
+</div>
 
 ## Configuration
 You can specify the configuration in a `.spdx-builder.yml` in the root of your project.
-See [instructions in philips-internal/spdx-builder](https://github.com/philips-software/spdx-builder#including-projects-in-the-spdx-file).
+See [instructions in philips-software/spdx-builder](https://github.com/philips-software/spdx-builder#including-projects-in-the-spdx-file).
 
 ## Environment
 This action requires a java environment. (See example)
