@@ -21,7 +21,7 @@ inputs:
   spdx-builder-version:
     description: "spdx-builder-version"
     required: true
-    default: 'v0.4.0'
+    default: 'v0.5.0'
   ort-version:
     description: "philipssoftware/ort version"
     required: false
@@ -87,7 +87,7 @@ runs:
         echo "--------------------------------------------------------------------"
         echo " Running SPDX-builder"
         echo "--------------------------------------------------------------------"
-        java -jar spdx-builder.jar -c .spdx-builder.yml -o ${PROJECT}.spdx ${INPUT_FILE} ${SCANNER_ARG} ${UPLOAD_ARG}
+        java -jar spdx-builder.jar ort -c .spdx-builder.yml -o ${PROJECT}.spdx ${INPUT_FILE} ${SCANNER_ARG} ${UPLOAD_ARG}
         echo "--------------------------------------------------------------------"
         echo "Finished!"
         echo "--------------------------------------------------------------------"
