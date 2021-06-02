@@ -21,11 +21,11 @@ inputs:
   spdx-builder-version:
     description: "spdx-builder-version"
     required: true
-    default: 'v0.5.0'
+    default: 'v0.6.0'
   ort-version:
     description: "philipssoftware/ort version"
     required: false
-    default: '2021-03-03'
+    default: '2021-05-31'
   ort-file:
     description: "Specifies an ort-file to override ORT scanning in this action."
     required: true
