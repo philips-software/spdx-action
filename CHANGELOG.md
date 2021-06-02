@@ -7,4 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Use spdx-builder v0.6.0
+- Use ORT version 2021-05-31
+
+### Release v0.5.0
 - First version
