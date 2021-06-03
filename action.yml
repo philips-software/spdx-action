@@ -22,15 +22,22 @@ inputs:
     description: "spdx-builder-version"
     required: true
     default: 'v0.6.0'
+  mode:
+    description: "Scan mode. Can be 'ort', 'blackduck' or 'tree'"
+    required: true
+    default: 'ort'
   ort-version:
     description: "philipssoftware/ort version"
     required: false
     default: '2021-05-31'
   ort-file:
     description: "Specifies an ort-file to override ORT scanning in this action."
-    required: true
+    required: false
   scanner-url:
     description: "scanner-url (license-scanner)"
+    required: false
+  bombase-url:
+    description: "bombase-url (in case of mode: 'tree')"
     required: false
   upload-url:
     description: "upload-url (f.e. BOM-bar)"
@@ -40,6 +47,7 @@ runs:
   using: "composite"
   steps:
     - name: Scan with ORT 
+      if: ${{ inputs.mode == 'ort' }}
       run: |
         [ -n "${ORT_FILE}" ] && { echo "We have our own ORT_FILE so we don't need to scan it here"; exit 0; }
         # Allow ORT to fail. When one repository can't be found, the rest still makes sense to analyse 
@@ -52,8 +60,9 @@ runs:
       shell: bash
       env:
         ORT_FILE: ${{ inputs.ort-file }}
-    - name: Create SPDX file
+    - name: Create SPDX file with ORT
       id: spdx
+      if: ${{ inputs.mode == 'ort' }}
       run: |
         echo "--------------------------------------------------------------------"
         echo " Creating SPDX file for ${PROJECT}. "
