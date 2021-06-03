@@ -39,6 +39,12 @@ inputs:
   bombase-url:
     description: "bombase-url (in case of mode: 'tree')"
     required: false
+  tree:
+    description: "tree input (in case of mode: 'tree')"
+    required: false
+  format:
+    description: "format input (in case of mode: 'tree')"
+    required: false
   upload-url:
     description: "upload-url (f.e. BOM-bar)"
     required: false
@@ -106,5 +112,54 @@ runs:
         PROJECT: ${{ inputs.project }}
         SCANNER_URL: ${{ inputs.scanner-url }}
         ORT_FILE: ${{ inputs.ort-file }}
+        UPLOAD_URL: ${{ inputs.upload-url }}
+      shell: bash
+    - name: Create SPDX file with tree
+      id: spdx
+      if: ${{ inputs.mode == 'tree' }}
+      run: |
+        echo "--------------------------------------------------------------------"
+        echo " Creating SPDX file for ${PROJECT} based on tree import."
+        echo "--------------------------------------------------------------------"
+        echo " Inputs: "
+        echo "    PROJECT              : ${PROJECT} "
+        echo "    BOMBASE_URL          : ${BOMBASE_URL} "
+        echo "    UPLOAD_URL           : ${UPLOAD_URL} "
+        echo "    TREE                 : ${TREE} "
+        echo "    FORMAT               : ${FORMAT} "
+        echo "--------------------------------------------------------------------"
+        echo ""
+        echo "--------------------------------------------------------------------"
+        echo " Downloading spdx-builder"
+        echo "--------------------------------------------------------------------"
+        curl -L https://github.com/philips-software/spdx-builder/releases/download/${{ inputs.spdx-builder-version }}/spdx-builder.jar -o spdx-builder.jar
+        echo "--------------------------------------------------------------------"
+        echo " Set BOMBASE_ARG"
+        echo "--------------------------------------------------------------------"
+        [ -z "$BOMBASE_URL" ] && BOMBASE_ARG="" || BOMBASE_ARG="--kb ${BOMBASE_URL}"
+        echo "          BOMBASE_ARG: ${BOMBASE_ARG}"
+        echo "--------------------------------------------------------------------"
+        echo " Set tree"
+        echo "--------------------------------------------------------------------"
+        [ -n "$TREE" ] && INPUT_TREE=${TREE}
+        echo "          INPUT_TREE: ${INPUT_TREE}"
+        echo "--------------------------------------------------------------------"
+        echo " Set UPLOAD_ARG"
+        echo "--------------------------------------------------------------------"
+        [ -z "$UPLOAD_URL" ] && UPLOAD_ARG="" || UPLOAD_ARG="--upload ${UPLOAD_URL}"
+        echo "          UPLOAD_ARG: ${UPLOAD_ARG}"
+        echo "--------------------------------------------------------------------"
+        echo " Running SPDX-builder"
+        echo "--------------------------------------------------------------------"
+        cat ${TREE} | java -jar spdx-builder.jar tree -f ${FORMAT} -c .spdx-builder.yml -o ${PROJECT}.spdx ${BOMBASE_ARG} ${UPLOAD_ARG}
+        echo "--------------------------------------------------------------------"
+        echo "Finished!"
+        echo "--------------------------------------------------------------------"
+        echo "::set-output name=spdx-file::${PROJECT}.spdx"
+      env:
+        PROJECT: ${{ inputs.project }}
+        BOMBASE_URL: ${{ inputs.bombase-url }}
+        TREE: ${{ inputs.tree }}
+        FORMAT: ${{ inputs.format }}
         UPLOAD_URL: ${{ inputs.upload-url }}
       shell: bash
