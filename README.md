@@ -31,9 +31,11 @@ Get SPDX license overview
 | - | - | - | - |
 | project | project | `true` | spdx-builder |
 | spdx-builder-version | spdx-builder-version | `true` | v0.6.0 |
+| mode | Scan mode. Can be 'ort', 'blackduck' or 'tree' | `true` | ort |
 | ort-version | philipssoftware/ort version | `false` | 2021-05-31 |
-| ort-file | Specifies an ort-file to override ORT scanning in this action. | `true` |  |
+| ort-file | Specifies an ort-file to override ORT scanning in this action. | `false` |  |
 | scanner-url | scanner-url (license-scanner) | `false` |  |
+| bombase-url | bombase-url (in case of mode: 'tree') | `false` |  |
 | upload-url | upload-url (f.e. BOM-bar) | `false` |  |
 
 
