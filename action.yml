@@ -53,8 +53,8 @@ runs:
   using: "composite"
   steps:
     - name: Scan with ORT 
-      if: ${{ inputs.mode == 'ort' }}
       run: |
+        [ "${MODE}" != 'ort' ] && { echo "mode is not 'ort' so don't perform this step"; exit 0; }
         [ -n "${ORT_FILE}" ] && { echo "We have our own ORT_FILE so we don't need to scan it here"; exit 0; }
         # Allow ORT to fail. When one repository can't be found, the rest still makes sense to analyse 
         echo "--------------------------------------------------------------------"
@@ -66,10 +66,11 @@ runs:
       shell: bash
       env:
         ORT_FILE: ${{ inputs.ort-file }}
+        MODE: ${{ inputs.mode }}
     - name: Create SPDX file with ORT
-      id: spdx
-      if: ${{ inputs.mode == 'ort' }}
+      id: spdx-ort
       run: |
+        [ "${MODE}" != 'ort' ] && { echo "mode is not 'ort' so don't perform this step"; exit 0; }
         echo "--------------------------------------------------------------------"
         echo " Creating SPDX file for ${PROJECT}. "
         echo "--------------------------------------------------------------------"
@@ -113,11 +114,12 @@ runs:
         SCANNER_URL: ${{ inputs.scanner-url }}
         ORT_FILE: ${{ inputs.ort-file }}
         UPLOAD_URL: ${{ inputs.upload-url }}
+        MODE: ${{ inputs.mode }}
       shell: bash
     - name: Create SPDX file with tree
-      id: spdx
-      if: ${{ inputs.mode == 'tree' }}
+      id: spdx-tree
       run: |
+        [ "${MODE}" != 'tree' ] && { echo "mode is not 'tree' so don't perform this step"; exit 0; }
         echo "--------------------------------------------------------------------"
         echo " Creating SPDX file for ${PROJECT} based on tree import."
         echo "--------------------------------------------------------------------"
@@ -157,4 +159,5 @@ runs:
         TREE: ${{ inputs.tree }}
         FORMAT: ${{ inputs.format }}
         UPLOAD_URL: ${{ inputs.upload-url }}
+        MODE: ${{ inputs.mode }}
       shell: bash
