@@ -8,7 +8,7 @@ branding:
 outputs:
   spdx-file:
     description: "spdx-license file"
-    value: ${{ steps.spdx.outputs.spdx-file }}
+    value: ${{ steps.spdx-ort.outputs.spdx-file }} ${{ steps.spdx-tree.outputs.spdx-file }}
   ort-file:
     description: "ort-license file"
     value: ${{ steps.spdx.outputs.ort-file }}
