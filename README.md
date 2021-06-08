@@ -36,7 +36,7 @@ Get SPDX license overview
 | ort-file | Specifies an ort-file to override ORT scanning in this action. | `false` |  |
 | scanner-url | scanner-url (license-scanner) | `false` |  |
 | bombase-url | bombase-url (in case of mode: 'tree') | `false` |  |
-| tree | tree input (in case of mode: 'tree') | `false` |  |
+| tree | file with tree input (in case of mode: 'tree') | `false` |  |
 | format | format input (in case of mode: 'tree') | `false` |  |
 | upload-url | upload-url (f.e. BOM-bar) | `false` |  |
 
