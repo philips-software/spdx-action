@@ -40,7 +40,7 @@ inputs:
     description: "bombase-url (in case of mode: 'tree')"
     required: false
   tree:
-    description: "tree input (in case of mode: 'tree')"
+    description: "file with tree input (in case of mode: 'tree')"
     required: false
   format:
     description: "format input (in case of mode: 'tree')"
@@ -148,7 +148,7 @@ runs:
         echo "--------------------------------------------------------------------"
         echo " Running SPDX-builder"
         echo "--------------------------------------------------------------------"
-        echo "${INPUT_TREE}" | java -jar spdx-builder.jar tree -f ${FORMAT} -c .spdx-builder.yml -o ${PROJECT}.spdx ${BOMBASE_ARG} ${UPLOAD_ARG}
+        cat "${TREE}" | java -jar spdx-builder.jar tree -f ${FORMAT} -c .spdx-builder.yml -o ${PROJECT}.spdx ${BOMBASE_ARG} ${UPLOAD_ARG}
         echo "--------------------------------------------------------------------"
         echo "Finished!"
         echo "--------------------------------------------------------------------"
