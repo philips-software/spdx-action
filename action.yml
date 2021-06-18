@@ -21,7 +21,7 @@ inputs:
   spdx-builder-version:
     description: "spdx-builder-version"
     required: true
-    default: 'v0.6.0'
+    default: 'v0.7.0'
   ort-version:
     description: "philipssoftware/ort version"
     required: false
