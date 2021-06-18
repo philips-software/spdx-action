@@ -32,13 +32,17 @@ Get SPDX license overview
 | project | project | `true` | spdx-builder |
 | spdx-builder-version | spdx-builder-version | `true` | v0.7.0 |
 | mode | Scan mode. Can be 'ort', 'blackduck' or 'tree' | `true` | ort |
-| ort-version | philipssoftware/ort version | `false` | 2021-05-31 |
-| ort-file | Specifies an ort-file to override ORT scanning in this action. | `false` |  |
 | scanner-url | scanner-url (license-scanner) | `false` |  |
 | bombase-url | bombase-url (in case of mode: 'tree') | `false` |  |
+| upload-url | upload-url (f.e. BOM-bar) | `false` |  |
+| ort-version | philipssoftware/ort version (in case of mode: 'ort') | `false` | 2021-05-31 |
+| ort-file | Specifies an ort-file to override ORT scanning in this action. (in case of mode: 'ort') | `false` |  |
 | tree | file with tree input (in case of mode: 'tree') | `false` |  |
 | format | format input (in case of mode: 'tree') | `false` |  |
-| upload-url | upload-url (f.e. BOM-bar) | `false` |  |
+| blackduck-url | Blackduck url (in case of mode: 'blackduck') | `false` |  |
+| blackduck-token | Blackduck token (in case of mode: 'blackduck') | `false` |  |
+| blackduck-project | Blackduck project (in case of mode: 'blackduck') | `false` |  |
+| blackduck-version | Blackduck version (in case of mode: 'blackduck') | `false` |  |
 
 
 
