@@ -30,7 +30,7 @@ Get SPDX license overview
 | parameter | description | required | default |
 | - | - | - | - |
 | project | project | `true` | spdx-builder |
-| spdx-builder-version | spdx-builder-version | `true` | v0.6.0 |
+| spdx-builder-version | spdx-builder-version | `true` | v0.7.0 |
 | mode | Scan mode. Can be 'ort', 'blackduck' or 'tree' | `true` | ort |
 | ort-version | philipssoftware/ort version | `false` | 2021-05-31 |
 | ort-file | Specifies an ort-file to override ORT scanning in this action. | `false` |  |
