@@ -8,7 +8,7 @@ branding:
 outputs:
   spdx-file:
     description: "spdx-license file"
-    value: ${{ steps.spdx.outputs.spdx-file }}
+    value: ${{ steps.spdx-ort.outputs.spdx-file }} ${{ steps.spdx-tree.outputs.spdx-file }} ${{ steps.spdx-blackduck.outputs.spdx-file }}
   ort-file:
     description: "ort-license file"
     value: ${{ steps.spdx.outputs.ort-file }}
@@ -21,19 +21,47 @@ inputs:
   spdx-builder-version:
     description: "spdx-builder-version"
     required: true
-    default: 'v0.6.0'
-  ort-version:
-    description: "philipssoftware/ort version"
-    required: false
-    default: '2021-05-31'
-  ort-file:
-    description: "Specifies an ort-file to override ORT scanning in this action."
+    default: 'v0.7.0'
+  mode:
+    description: "Scan mode. Can be 'ort', 'blackduck' or 'tree'"
     required: true
+    default: 'ort'
   scanner-url:
     description: "scanner-url (license-scanner)"
     required: false
+  bombase-url:
+    description: "bombase-url (in case of mode: 'tree')"
+    required: false
   upload-url:
     description: "upload-url (f.e. BOM-bar)"
+    required: false
+# ORT specific inputs
+  ort-version:
+    description: "philipssoftware/ort version (in case of mode: 'ort')"
+    required: false
+    default: '2021-05-31'
+  ort-file:
+    description: "Specifies an ort-file to override ORT scanning in this action. (in case of mode: 'ort')"
+    required: false
+# tree specific inputs
+  tree:
+    description: "file with tree input (in case of mode: 'tree')"
+    required: false
+  format:
+    description: "format input (in case of mode: 'tree')"
+    required: false
+# blackduck specific inputs
+  blackduck-url:
+    description: "Blackduck url (in case of mode: 'blackduck')"
+    required: false
+  blackduck-token:
+    description: "Blackduck token (in case of mode: 'blackduck')"
+    required: false
+  blackduck-project:
+    description: "Blackduck project (in case of mode: 'blackduck')"
+    required: false
+  blackduck-version:
+    description: "Blackduck version (in case of mode: 'blackduck')"
     required: false
 
 runs:
@@ -41,6 +69,7 @@ runs:
   steps:
     - name: Scan with ORT 
       run: |
+        [ "${MODE}" != 'ort' ] && { echo "mode is not 'ort' so don't perform this step"; exit 0; }
         [ -n "${ORT_FILE}" ] && { echo "We have our own ORT_FILE so we don't need to scan it here"; exit 0; }
         # Allow ORT to fail. When one repository can't be found, the rest still makes sense to analyse 
         echo "--------------------------------------------------------------------"
@@ -52,9 +81,11 @@ runs:
       shell: bash
       env:
         ORT_FILE: ${{ inputs.ort-file }}
-    - name: Create SPDX file
-      id: spdx
+        MODE: ${{ inputs.mode }}
+    - name: Create SPDX file with ORT
+      id: spdx-ort
       run: |
+        [ "${MODE}" != 'ort' ] && { echo "mode is not 'ort' so don't perform this step"; exit 0; }
         echo "--------------------------------------------------------------------"
         echo " Creating SPDX file for ${PROJECT}. "
         echo "--------------------------------------------------------------------"
@@ -98,4 +129,99 @@ runs:
         SCANNER_URL: ${{ inputs.scanner-url }}
         ORT_FILE: ${{ inputs.ort-file }}
         UPLOAD_URL: ${{ inputs.upload-url }}
+        MODE: ${{ inputs.mode }}
+      shell: bash
+    - name: Create SPDX file with tree
+      id: spdx-tree
+      run: |
+        [ "${MODE}" != 'tree' ] && { echo "mode is not 'tree' so don't perform this step"; exit 0; }
+        echo "--------------------------------------------------------------------"
+        echo " Creating SPDX file for ${PROJECT} based on tree import."
+        echo "--------------------------------------------------------------------"
+        echo " Inputs: "
+        echo "    PROJECT              : ${PROJECT} "
+        echo "    BOMBASE_URL          : ${BOMBASE_URL} "
+        echo "    UPLOAD_URL           : ${UPLOAD_URL} "
+        echo "    TREE                 : ${TREE} "
+        echo "    FORMAT               : ${FORMAT} "
+        echo "--------------------------------------------------------------------"
+        echo ""
+        echo "--------------------------------------------------------------------"
+        echo " Downloading spdx-builder"
+        echo "--------------------------------------------------------------------"
+        curl -L https://github.com/philips-software/spdx-builder/releases/download/${{ inputs.spdx-builder-version }}/spdx-builder.jar -o spdx-builder.jar
+        echo "--------------------------------------------------------------------"
+        echo " Set BOMBASE_ARG"
+        echo "--------------------------------------------------------------------"
+        [ -z "$BOMBASE_URL" ] && BOMBASE_ARG="" || BOMBASE_ARG="--bombase ${BOMBASE_URL}"
+        echo "          BOMBASE_ARG: ${BOMBASE_ARG}"
+        echo "--------------------------------------------------------------------"
+        echo " Set UPLOAD_ARG"
+        echo "--------------------------------------------------------------------"
+        [ -z "$UPLOAD_URL" ] && UPLOAD_ARG="" || UPLOAD_ARG="--upload ${UPLOAD_URL}"
+        echo "          UPLOAD_ARG: ${UPLOAD_ARG}"
+        echo "--------------------------------------------------------------------"
+        echo " Running SPDX-builder"
+        echo "--------------------------------------------------------------------"
+        cat "${TREE}" | java -jar spdx-builder.jar tree -f ${FORMAT} -c .spdx-builder.yml -o ${PROJECT}.spdx ${BOMBASE_ARG} ${UPLOAD_ARG}
+        echo "--------------------------------------------------------------------"
+        echo "Finished!"
+        echo "--------------------------------------------------------------------"
+        echo "::set-output name=spdx-file::${PROJECT}.spdx"
+      env:
+        PROJECT: ${{ inputs.project }}
+        BOMBASE_URL: ${{ inputs.bombase-url }}
+        TREE: ${{ inputs.tree }}
+        FORMAT: ${{ inputs.format }}
+        UPLOAD_URL: ${{ inputs.upload-url }}
+        MODE: ${{ inputs.mode }}
+      shell: bash
+    - name: Create SPDX file with blackduck
+      id: spdx-blackduck
+      run: |
+        [ "${MODE}" != 'blackduck' ] && { echo "mode is not 'blackduck' so don't perform this step"; exit 0; }
+        echo "--------------------------------------------------------------------"
+        echo " Creating SPDX file for ${PROJECT} based on blackduck import."
+        echo "--------------------------------------------------------------------"
+        echo " Inputs: "
+        echo "    PROJECT              : ${PROJECT} "
+        echo "    BOMBASE_URL          : ${BOMBASE_URL} "
+        echo "    UPLOAD_URL           : ${UPLOAD_URL} "
+        echo "    BLACKDUCK_PROJECT    : ${BLACKUCK_PROJECT} "
+        echo "    BLACKDUCK_VERSION    : ${BLACKUCK_VERSION} "
+        echo "    BLACKDUCK_URL        : ${BLACKUCK_URL} "
+        echo "    BLACKDUCK_TOKEN      : ${BLACKUCK_TOKEN} "
+        echo "--------------------------------------------------------------------"
+        echo ""
+        echo "--------------------------------------------------------------------"
+        echo " Downloading spdx-builder"
+        echo "--------------------------------------------------------------------"
+        curl -L https://github.com/philips-software/spdx-builder/releases/download/${{ inputs.spdx-builder-version }}/spdx-builder.jar -o spdx-builder.jar
+        echo "--------------------------------------------------------------------"
+        echo " Set BOMBASE_ARG"
+        echo "--------------------------------------------------------------------"
+        [ -z "$BOMBASE_URL" ] && BOMBASE_ARG="" || BOMBASE_ARG="--bombase ${BOMBASE_URL}"
+        echo "          BOMBASE_ARG: ${BOMBASE_ARG}"
+        echo "--------------------------------------------------------------------"
+        echo " Set UPLOAD_ARG"
+        echo "--------------------------------------------------------------------"
+        [ -z "$UPLOAD_URL" ] && UPLOAD_ARG="" || UPLOAD_ARG="--upload ${UPLOAD_URL}"
+        echo "          UPLOAD_ARG: ${UPLOAD_ARG}"
+        echo "--------------------------------------------------------------------"
+        echo " Running SPDX-builder"
+        echo "--------------------------------------------------------------------"
+        java -jar spdx-builder.jar blackduck -o ${PROJECT}.spdx --url ${BLACKDUCK_URL} --token ${BLACKDUCK_TOKEN} ${BLACKDUCK_PROJECT} ${BLACKDUCK_VERSION} ${BOMBASE_ARG} ${UPLOAD_ARG}
+        echo "--------------------------------------------------------------------"
+        echo "Finished!"
+        echo "--------------------------------------------------------------------"
+        echo "::set-output name=spdx-file::${PROJECT}.spdx"
+      env:
+        PROJECT: ${{ inputs.project }}
+        BOMBASE_URL: ${{ inputs.bombase-url }}
+        UPLOAD_URL: ${{ inputs.upload-url }}
+        MODE: ${{ inputs.mode }}
+        BLACKDUCK_PROJECT: ${{ inputs.blackduck-project }}
+        BLACKDUCK_VERSION: ${{ inputs.blackduck-version }}
+        BLACKDUCK_URL: ${{ inputs.blackduck-url }}
+        BLACKDUCK_TOKEN: ${{ inputs.blackduck-token }}
       shell: bash
