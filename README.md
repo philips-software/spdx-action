@@ -70,6 +70,9 @@ This action is an `composite` action.
 
 ## GitHub workflow
 
+Make sure you have a proper `.spdx-builder.yml` file in your project.
+
+### `ORT` mode
 ```yml
   - uses: actions/checkout@v2
   - uses: actions/setup-java@v1
@@ -80,6 +83,53 @@ This action is an `composite` action.
     uses: philips-software/spdx-action@v0.6.0
     with:
       project: my-project
+      mode: ort
+  - uses: actions/upload-artifact@v2
+    with:
+      name: licenses
+      path: ${{ steps.spdx-builder.outputs.spdx-file }}
+```
+
+### `tree` mode
+```yml
+  - uses: actions/checkout@v2
+  - uses: actions/setup-java@v1
+    with:
+      java-version: '11.0.1'
+  - name: Create tree
+    run: |
+      npm list --all --production > npm-dependencies.txt
+  - name: Create spdx-file
+    id: spdx-builder
+    uses: philips-software/spdx-action@v0.6.0
+     with:
+      project: my-project
+      mode: 'tree'
+      tree: 'npm-dependencies.txt'
+      format: 'npm'
+      bombase-url: <bombase-url> # Optional
+  - uses: actions/upload-artifact@v2
+    with:
+      name: licenses
+      path: ${{ steps.spdx-builder.outputs.spdx-file }}
+```
+
+### `blackduck` mode
+```yml
+  - uses: actions/checkout@v2
+  - uses: actions/setup-java@v1
+    with:
+      java-version: '11.0.1'
+  - name: Create spdx-file
+    id: spdx-builder
+    uses: philips-software/spdx-action@v0.6.0
+    with:
+      project: my-project
+      mode: 'blackduck'
+      blackduck-url: <blackduck-url>
+      blackduck-token: ${{ secrets.BLACKDUCK_TOKEN }}
+      blackduck-project: <project-name>
+      blackduck-version: <project-version>
   - uses: actions/upload-artifact@v2
     with:
       name: licenses
