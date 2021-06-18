@@ -80,7 +80,7 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
       java-version: '11.0.1'
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.6.0
+    uses: philips-software/spdx-action@v0.8.0
     with:
       project: my-project
       mode: ort
@@ -101,7 +101,7 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
       npm list --all --production > npm-dependencies.txt
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.6.0
+    uses: philips-software/spdx-action@v0.8.0
      with:
       project: my-project
       mode: 'tree'
@@ -122,7 +122,7 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
       java-version: '11.0.1'
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.6.0
+    uses: philips-software/spdx-action@v0.8.0
     with:
       project: my-project
       mode: 'blackduck'
@@ -149,7 +149,3 @@ This module is part of the Philips Forest.
 
                                                                             CI
 ```
-
-Talk to the forestkeepers in the `forest`-channel on Slack.
-
-[![Slack](https://philips-software-slackin.now.sh/badge.svg)](https://philips-software-slackin.now.sh)
