@@ -21,7 +21,7 @@ inputs:
   spdx-builder-version:
     description: "spdx-builder-version"
     required: true
-    default: 'v0.7.0'
+    default: 'v0.8.0'
   mode:
     description: "Scan mode. Can be 'ort', 'blackduck' or 'tree'"
     required: true
@@ -63,6 +63,9 @@ inputs:
   blackduck-version:
     description: "Blackduck version (in case of mode: 'blackduck')"
     required: false
+  optional-arguments:
+    description: "Optional arguments like `--tree`, `--release`, `--force` and `--custom`"
+    required: false
 
 runs:
   using: "composite"
@@ -82,6 +85,7 @@ runs:
       env:
         ORT_FILE: ${{ inputs.ort-file }}
         MODE: ${{ inputs.mode }}
+        OPTIONAL_ARGUMENTS: ${{ inputs.optional-arguments }}
     - name: Create SPDX file with ORT
       id: spdx-ort
       run: |
@@ -94,6 +98,7 @@ runs:
         echo "    SCANNER_URL          : ${SCANNER_URL} "
         echo "    UPLOAD_URL           : ${UPLOAD_URL} "
         echo "    ORT_FILE             : ${ORT_FILE} "
+        echo "    OPTIONAL_ARGUMENTS   : ${OPTIONAL_ARGUMENTS} "
         echo "--------------------------------------------------------------------"
         echo ""
         echo "--------------------------------------------------------------------"
@@ -116,9 +121,14 @@ runs:
         [ -z "$UPLOAD_URL" ] && UPLOAD_ARG="" || UPLOAD_ARG="--upload ${UPLOAD_URL}"
         echo "          UPLOAD_ARG: ${UPLOAD_ARG}"
         echo "--------------------------------------------------------------------"
+        echo " Set OPTIONAL_ARG"
+        echo "--------------------------------------------------------------------"
+        [ -z "$OPTIONAL_ARGUMENTS" ] && OPTIONAL_ARG="" || OPTIONAL_ARG="${OPTIONAL_ARGUMENTS}"
+        echo "          OPTIONAL_ARG: ${OPTIONAL_ARG}"
+        echo "--------------------------------------------------------------------"
         echo " Running SPDX-builder"
         echo "--------------------------------------------------------------------"
-        java -jar spdx-builder.jar ort -c .spdx-builder.yml -o ${PROJECT}.spdx ${INPUT_FILE} ${SCANNER_ARG} ${UPLOAD_ARG}
+        java -jar spdx-builder.jar ort -c .spdx-builder.yml -o ${PROJECT}.spdx ${INPUT_FILE} ${SCANNER_ARG} ${UPLOAD_ARG} ${OPTIONAL_ARG}
         echo "--------------------------------------------------------------------"
         echo "Finished!"
         echo "--------------------------------------------------------------------"
@@ -130,6 +140,7 @@ runs:
         ORT_FILE: ${{ inputs.ort-file }}
         UPLOAD_URL: ${{ inputs.upload-url }}
         MODE: ${{ inputs.mode }}
+        OPTIONAL_ARGUMENTS: ${{ inputs.optional-arguments }}
       shell: bash
     - name: Create SPDX file with tree
       id: spdx-tree
@@ -144,6 +155,7 @@ runs:
         echo "    UPLOAD_URL           : ${UPLOAD_URL} "
         echo "    TREE                 : ${TREE} "
         echo "    FORMAT               : ${FORMAT} "
+        echo "    OPTIONAL_ARGUMENTS   : ${OPTIONAL_ARGUMENTS} "
         echo "--------------------------------------------------------------------"
         echo ""
         echo "--------------------------------------------------------------------"
@@ -161,9 +173,14 @@ runs:
         [ -z "$UPLOAD_URL" ] && UPLOAD_ARG="" || UPLOAD_ARG="--upload ${UPLOAD_URL}"
         echo "          UPLOAD_ARG: ${UPLOAD_ARG}"
         echo "--------------------------------------------------------------------"
+        echo " Set OPTIONAL_ARG"
+        echo "--------------------------------------------------------------------"
+        [ -z "$OPTIONAL_ARGUMENTS" ] && OPTIONAL_ARG="" || OPTIONAL_ARG="${OPTIONAL_ARGUMENTS}"
+        echo "          OPTIONAL_ARG: ${OPTIONAL_ARG}"
+        echo "--------------------------------------------------------------------"
         echo " Running SPDX-builder"
         echo "--------------------------------------------------------------------"
-        cat "${TREE}" | java -jar spdx-builder.jar tree -f ${FORMAT} -c .spdx-builder.yml -o ${PROJECT}.spdx ${BOMBASE_ARG} ${UPLOAD_ARG}
+        cat "${TREE}" | java -jar spdx-builder.jar tree -f ${FORMAT} -c .spdx-builder.yml -o ${PROJECT}.spdx ${BOMBASE_ARG} ${UPLOAD_ARG} ${OPTIONAL_ARG}
         echo "--------------------------------------------------------------------"
         echo "Finished!"
         echo "--------------------------------------------------------------------"
@@ -175,6 +192,7 @@ runs:
         FORMAT: ${{ inputs.format }}
         UPLOAD_URL: ${{ inputs.upload-url }}
         MODE: ${{ inputs.mode }}
+        OPTIONAL_ARGUMENTS: ${{ inputs.optional-arguments }}
       shell: bash
     - name: Create SPDX file with blackduck
       id: spdx-blackduck
@@ -191,6 +209,7 @@ runs:
         echo "    BLACKDUCK_VERSION    : ${BLACKUCK_VERSION} "
         echo "    BLACKDUCK_URL        : ${BLACKUCK_URL} "
         echo "    BLACKDUCK_TOKEN      : ${BLACKUCK_TOKEN} "
+        echo "    OPTIONAL_ARGUMENTS   : ${OPTIONAL_ARGUMENTS} "
         echo "--------------------------------------------------------------------"
         echo ""
         echo "--------------------------------------------------------------------"
@@ -208,9 +227,14 @@ runs:
         [ -z "$UPLOAD_URL" ] && UPLOAD_ARG="" || UPLOAD_ARG="--upload ${UPLOAD_URL}"
         echo "          UPLOAD_ARG: ${UPLOAD_ARG}"
         echo "--------------------------------------------------------------------"
+        echo " Set OPTIONAL_ARG"
+        echo "--------------------------------------------------------------------"
+        [ -z "$OPTIONAL_ARGUMENTS" ] && OPTIONAL_ARG="" || OPTIONAL_ARG="${OPTIONAL_ARGUMENTS}"
+        echo "          OPTIONAL_ARG: ${OPTIONAL_ARG}"
+        echo "--------------------------------------------------------------------"
         echo " Running SPDX-builder"
         echo "--------------------------------------------------------------------"
-        java -jar spdx-builder.jar blackduck -o ${PROJECT}.spdx --url ${BLACKDUCK_URL} --token ${BLACKDUCK_TOKEN} ${BLACKDUCK_PROJECT} ${BLACKDUCK_VERSION} ${BOMBASE_ARG} ${UPLOAD_ARG}
+        java -jar spdx-builder.jar blackduck -o ${PROJECT}.spdx --url ${BLACKDUCK_URL} --token ${BLACKDUCK_TOKEN} ${BLACKDUCK_PROJECT} ${BLACKDUCK_VERSION} ${BOMBASE_ARG} ${UPLOAD_ARG} ${OPTIONAL_ARG}
         echo "--------------------------------------------------------------------"
         echo "Finished!"
         echo "--------------------------------------------------------------------"

@@ -30,7 +30,7 @@ Get SPDX license overview
 | parameter | description | required | default |
 | - | - | - | - |
 | project | project | `true` | spdx-builder |
-| spdx-builder-version | spdx-builder-version | `true` | v0.7.0 |
+| spdx-builder-version | spdx-builder-version | `true` | v0.8.0 |
 | mode | Scan mode. Can be 'ort', 'blackduck' or 'tree' | `true` | ort |
 | scanner-url | scanner-url (license-scanner) | `false` |  |
 | bombase-url | bombase-url (in case of mode: 'tree') | `false` |  |
@@ -43,6 +43,7 @@ Get SPDX license overview
 | blackduck-token | Blackduck token (in case of mode: 'blackduck') | `false` |  |
 | blackduck-project | Blackduck project (in case of mode: 'blackduck') | `false` |  |
 | blackduck-version | Blackduck version (in case of mode: 'blackduck') | `false` |  |
+| optional-arguments | Optional arguments like `--tree`, `--release`, `--force` and `--custom` | `false` |  |
 
 
 
