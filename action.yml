@@ -21,7 +21,7 @@ inputs:
   spdx-builder-version:
     description: "spdx-builder-version"
     required: true
-    default: 'v0.8.0'
+    default: 'v0.8.1'
   mode:
     description: "Scan mode. Can be 'ort', 'blackduck' or 'tree'"
     required: true
