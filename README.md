@@ -81,7 +81,7 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
       java-version: '11.0.1'
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.8.0
+    uses: philips-software/spdx-action@v0.8.1
     with:
       project: my-project
       mode: ort
@@ -102,7 +102,7 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
       npm list --all --production > npm-dependencies.txt
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.8.0
+    uses: philips-software/spdx-action@v0.8.1
      with:
       project: my-project
       mode: 'tree'
@@ -123,7 +123,7 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
       java-version: '11.0.1'
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.8.0
+    uses: philips-software/spdx-action@v0.8.1
     with:
       project: my-project
       mode: 'blackduck'
