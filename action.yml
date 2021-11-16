@@ -203,8 +203,6 @@ runs:
         echo "--------------------------------------------------------------------"
         echo " Inputs: "
         echo "    PROJECT              : ${PROJECT} "
-        echo "    BOMBASE_URL          : ${BOMBASE_URL} "
-        echo "    UPLOAD_URL           : ${UPLOAD_URL} "
         echo "    BLACKDUCK_PROJECT    : ${BLACKUCK_PROJECT} "
         echo "    BLACKDUCK_VERSION    : ${BLACKUCK_VERSION} "
         echo "    BLACKDUCK_URL        : ${BLACKUCK_URL} "
@@ -217,16 +215,6 @@ runs:
         echo "--------------------------------------------------------------------"
         curl -L https://github.com/philips-software/spdx-builder/releases/download/${{ inputs.spdx-builder-version }}/spdx-builder.jar -o spdx-builder.jar
         echo "--------------------------------------------------------------------"
-        echo " Set BOMBASE_ARG"
-        echo "--------------------------------------------------------------------"
-        [ -z "$BOMBASE_URL" ] && BOMBASE_ARG="" || BOMBASE_ARG="--bombase ${BOMBASE_URL}"
-        echo "          BOMBASE_ARG: ${BOMBASE_ARG}"
-        echo "--------------------------------------------------------------------"
-        echo " Set UPLOAD_ARG"
-        echo "--------------------------------------------------------------------"
-        [ -z "$UPLOAD_URL" ] && UPLOAD_ARG="" || UPLOAD_ARG="--upload ${UPLOAD_URL}"
-        echo "          UPLOAD_ARG: ${UPLOAD_ARG}"
-        echo "--------------------------------------------------------------------"
         echo " Set OPTIONAL_ARG"
         echo "--------------------------------------------------------------------"
         [ -z "$OPTIONAL_ARGUMENTS" ] && OPTIONAL_ARG="" || OPTIONAL_ARG="${OPTIONAL_ARGUMENTS}"
@@ -234,18 +222,17 @@ runs:
         echo "--------------------------------------------------------------------"
         echo " Running SPDX-builder"
         echo "--------------------------------------------------------------------"
-        java -jar spdx-builder.jar blackduck -o ${PROJECT}.spdx --url ${BLACKDUCK_URL} --token ${BLACKDUCK_TOKEN} ${BLACKDUCK_PROJECT} ${BLACKDUCK_VERSION} ${BOMBASE_ARG} ${UPLOAD_ARG} ${OPTIONAL_ARG}
+        java -jar spdx-builder.jar blackduck -o ${PROJECT}.spdx --url ${BLACKDUCK_URL} --token ${BLACKDUCK_TOKEN} ${BLACKDUCK_PROJECT} ${BLACKDUCK_VERSION} ${OPTIONAL_ARG}
         echo "--------------------------------------------------------------------"
         echo "Finished!"
         echo "--------------------------------------------------------------------"
         echo "::set-output name=spdx-file::${PROJECT}.spdx"
       env:
         PROJECT: ${{ inputs.project }}
-        BOMBASE_URL: ${{ inputs.bombase-url }}
-        UPLOAD_URL: ${{ inputs.upload-url }}
         MODE: ${{ inputs.mode }}
         BLACKDUCK_PROJECT: ${{ inputs.blackduck-project }}
         BLACKDUCK_VERSION: ${{ inputs.blackduck-version }}
         BLACKDUCK_URL: ${{ inputs.blackduck-url }}
         BLACKDUCK_TOKEN: ${{ inputs.blackduck-token }}
+        OPTIONAL_ARGUMENTS: ${{ inputs.optional-arguments }}
       shell: bash
