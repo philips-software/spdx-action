@@ -30,7 +30,7 @@ Get SPDX license overview
 | parameter | description | required | default |
 | - | - | - | - |
 | project | project | `true` | spdx-builder |
-| spdx-builder-version | spdx-builder-version | `true` | v0.7.0 |
+| spdx-builder-version | spdx-builder-version | `true` | v0.8.1 |
 | mode | Scan mode. Can be 'ort', 'blackduck' or 'tree' | `true` | ort |
 | scanner-url | scanner-url (license-scanner) | `false` |  |
 | bombase-url | bombase-url (in case of mode: 'tree') | `false` |  |
@@ -43,6 +43,7 @@ Get SPDX license overview
 | blackduck-token | Blackduck token (in case of mode: 'blackduck') | `false` |  |
 | blackduck-project | Blackduck project (in case of mode: 'blackduck') | `false` |  |
 | blackduck-version | Blackduck version (in case of mode: 'blackduck') | `false` |  |
+| optional-arguments | Optional arguments like `--tree`, `--release`, `--force` and `--custom` | `false` |  |
 
 
 
@@ -80,7 +81,7 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
       java-version: '11.0.1'
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.6.0
+    uses: philips-software/spdx-action@v0.8.1
     with:
       project: my-project
       mode: ort
@@ -101,7 +102,7 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
       npm list --all --production > npm-dependencies.txt
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.6.0
+    uses: philips-software/spdx-action@v0.8.1
      with:
       project: my-project
       mode: 'tree'
@@ -122,7 +123,7 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
       java-version: '11.0.1'
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.6.0
+    uses: philips-software/spdx-action@v0.8.1
     with:
       project: my-project
       mode: 'blackduck'
@@ -149,7 +150,3 @@ This module is part of the Philips Forest.
 
                                                                             CI
 ```
-
-Talk to the forestkeepers in the `forest`-channel on Slack.
-
-[![Slack](https://philips-software-slackin.now.sh/badge.svg)](https://philips-software-slackin.now.sh)
