@@ -248,4 +248,5 @@ runs:
         BLACKDUCK_VERSION: ${{ inputs.blackduck-version }}
         BLACKDUCK_URL: ${{ inputs.blackduck-url }}
         BLACKDUCK_TOKEN: ${{ inputs.blackduck-token }}
+        OPTIONAL_ARGUMENTS: ${{ inputs.optional-arguments }}
       shell: bash
