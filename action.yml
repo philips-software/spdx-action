@@ -66,6 +66,9 @@ inputs:
   optional-arguments:
     description: "Optional arguments like `--tree`, `--release`, `--force` and `--custom`"
     required: false
+  capture-stdout-file:
+    description: "Capture stdout in a file. When given, this will be used as the filename of the output"
+    required: false
 
 runs:
   using: "composite"
@@ -193,6 +196,7 @@ runs:
         UPLOAD_URL: ${{ inputs.upload-url }}
         MODE: ${{ inputs.mode }}
         OPTIONAL_ARGUMENTS: ${{ inputs.optional-arguments }}
+        CAPTURE_STDOUT_FILE: ${{ inputs.capture-stdout-file }}
       shell: bash
     - name: Create SPDX file with blackduck
       id: spdx-blackduck
@@ -208,6 +212,7 @@ runs:
         echo "    BLACKDUCK_URL        : ${BLACKUCK_URL} "
         echo "    BLACKDUCK_TOKEN      : ${BLACKUCK_TOKEN} "
         echo "    OPTIONAL_ARGUMENTS   : ${OPTIONAL_ARGUMENTS} "
+        echo "    CAPTURE_STDOUT_FILE  : ${CAPTURE_STDOUT_FILE} "
         echo "--------------------------------------------------------------------"
         echo ""
         echo "--------------------------------------------------------------------"
@@ -222,7 +227,12 @@ runs:
         echo "--------------------------------------------------------------------"
         echo " Running SPDX-builder"
         echo "--------------------------------------------------------------------"
-        java -jar spdx-builder.jar blackduck -o ${PROJECT}.spdx --url ${BLACKDUCK_URL} --token ${BLACKDUCK_TOKEN} ${BLACKDUCK_PROJECT} ${BLACKDUCK_VERSION} ${OPTIONAL_ARG}
+        set -x
+        if [ -z "$CAPTURE_STDOUT_FILE" ]; then
+          java -jar spdx-builder.jar blackduck -o ${PROJECT}.spdx --url ${BLACKDUCK_URL} --token ${BLACKDUCK_TOKEN} ${BLACKDUCK_PROJECT} ${BLACKDUCK_VERSION} ${OPTIONAL_ARG}
+        else
+          java -jar spdx-builder.jar blackduck -o ${PROJECT}.spdx --url ${BLACKDUCK_URL} --token ${BLACKDUCK_TOKEN} ${BLACKDUCK_PROJECT} ${BLACKDUCK_VERSION} ${OPTIONAL_ARG} > ${CAPTURE_STDOUT_FILE} 2>&1
+        fi
         echo "--------------------------------------------------------------------"
         echo "Finished!"
         echo "--------------------------------------------------------------------"
