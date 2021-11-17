@@ -196,7 +196,6 @@ runs:
         UPLOAD_URL: ${{ inputs.upload-url }}
         MODE: ${{ inputs.mode }}
         OPTIONAL_ARGUMENTS: ${{ inputs.optional-arguments }}
-        CAPTURE_STDOUT_FILE: ${{ inputs.capture-stdout-file }}
       shell: bash
     - name: Create SPDX file with blackduck
       id: spdx-blackduck
@@ -245,4 +244,5 @@ runs:
         BLACKDUCK_URL: ${{ inputs.blackduck-url }}
         BLACKDUCK_TOKEN: ${{ inputs.blackduck-token }}
         OPTIONAL_ARGUMENTS: ${{ inputs.optional-arguments }}
+        CAPTURE_STDOUT_FILE: ${{ inputs.capture-stdout-file }}
       shell: bash
