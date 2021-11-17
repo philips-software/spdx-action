@@ -227,9 +227,11 @@ runs:
         echo " Running SPDX-builder"
         echo "--------------------------------------------------------------------"
         set -x
-        if [ -z "$CAPTURE_STDOUT_FILE" ]; then
+        if [ -z ${CAPTURE_STDOUT_FILE} ]; then
+          echo "no capture"
           java -jar spdx-builder.jar blackduck -o ${PROJECT}.spdx --url ${BLACKDUCK_URL} --token ${BLACKDUCK_TOKEN} ${BLACKDUCK_PROJECT} ${BLACKDUCK_VERSION} ${OPTIONAL_ARG}
         else
+          echo "with capture"
           java -jar spdx-builder.jar blackduck -o ${PROJECT}.spdx --url ${BLACKDUCK_URL} --token ${BLACKDUCK_TOKEN} ${BLACKDUCK_PROJECT} ${BLACKDUCK_VERSION} ${OPTIONAL_ARG} > ${CAPTURE_STDOUT_FILE} 2>&1
         fi
         echo "--------------------------------------------------------------------"
