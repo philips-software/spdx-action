@@ -21,7 +21,7 @@ inputs:
   spdx-builder-version:
     description: "spdx-builder-version"
     required: true
-    default: 'v0.8.1'
+    default: 'v0.9.0'
   mode:
     description: "Scan mode. Can be 'ort', 'blackduck' or 'tree'"
     required: true
@@ -65,6 +65,9 @@ inputs:
     required: false
   optional-arguments:
     description: "Optional arguments like `--tree`, `--release`, `--force` and `--custom`"
+    required: false
+  capture-stdout-file:
+    description: "Capture stdout in a file. When given, this will be used as the filename of the output"
     required: false
 
 runs:
@@ -208,6 +211,7 @@ runs:
         echo "    BLACKDUCK_URL        : ${BLACKUCK_URL} "
         echo "    BLACKDUCK_TOKEN      : ${BLACKUCK_TOKEN} "
         echo "    OPTIONAL_ARGUMENTS   : ${OPTIONAL_ARGUMENTS} "
+        echo "    CAPTURE_STDOUT_FILE  : ${CAPTURE_STDOUT_FILE} "
         echo "--------------------------------------------------------------------"
         echo ""
         echo "--------------------------------------------------------------------"
@@ -222,7 +226,14 @@ runs:
         echo "--------------------------------------------------------------------"
         echo " Running SPDX-builder"
         echo "--------------------------------------------------------------------"
-        java -jar spdx-builder.jar blackduck -o ${PROJECT}.spdx --url ${BLACKDUCK_URL} --token ${BLACKDUCK_TOKEN} ${BLACKDUCK_PROJECT} ${BLACKDUCK_VERSION} ${OPTIONAL_ARG}
+        set -x
+        if [ -z ${CAPTURE_STDOUT_FILE} ]; then
+          echo "no capture"
+          java -jar spdx-builder.jar blackduck -o ${PROJECT}.spdx --url ${BLACKDUCK_URL} --token ${BLACKDUCK_TOKEN} ${BLACKDUCK_PROJECT} ${BLACKDUCK_VERSION} ${OPTIONAL_ARG}
+        else
+          echo "with capture"
+          java -jar spdx-builder.jar blackduck -o ${PROJECT}.spdx --url ${BLACKDUCK_URL} --token ${BLACKDUCK_TOKEN} ${BLACKDUCK_PROJECT} ${BLACKDUCK_VERSION} ${OPTIONAL_ARG} > ${CAPTURE_STDOUT_FILE} 2>&1
+        fi
         echo "--------------------------------------------------------------------"
         echo "Finished!"
         echo "--------------------------------------------------------------------"
@@ -235,4 +246,5 @@ runs:
         BLACKDUCK_URL: ${{ inputs.blackduck-url }}
         BLACKDUCK_TOKEN: ${{ inputs.blackduck-token }}
         OPTIONAL_ARGUMENTS: ${{ inputs.optional-arguments }}
+        CAPTURE_STDOUT_FILE: ${{ inputs.capture-stdout-file }}
       shell: bash
