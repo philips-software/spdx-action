@@ -39,7 +39,7 @@ inputs:
   ort-version:
     description: "philipssoftware/ort version (in case of mode: 'ort')"
     required: false
-    default: '2021-05-31'
+    default: '2021-11-24'
   ort-file:
     description: "Specifies an ort-file to override ORT scanning in this action. (in case of mode: 'ort')"
     required: false
