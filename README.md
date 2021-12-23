@@ -79,10 +79,10 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
   - uses: actions/checkout@v2
   - uses: actions/setup-java@v1
     with:
-      java-version: '11.0.11'
+      java-version: '11.0.13'
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.9.1
+    uses: philips-software/spdx-action@v0.9.1.1
     with:
       project: my-project
       mode: ort
@@ -97,13 +97,13 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
   - uses: actions/checkout@v2
   - uses: actions/setup-java@v1
     with:
-      java-version: '11.0.11'
+      java-version: '11.0.13'
   - name: Create tree
     run: |
       npm list --all --production > npm-dependencies.txt
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.9.1
+    uses: philips-software/spdx-action@v0.9.1.1
      with:
       project: my-project
       mode: 'tree'
@@ -121,10 +121,10 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
   - uses: actions/checkout@v2
   - uses: actions/setup-java@v1
     with:
-      java-version: '11.0.11'
+      java-version: '11.0.13'
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.9.1
+    uses: philips-software/spdx-action@v0.9.1.1
     with:
       project: my-project
       mode: 'blackduck'
