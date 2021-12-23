@@ -35,7 +35,7 @@ Get SPDX license overview
 | scanner-url | scanner-url (license-scanner) | `false` |  |
 | bombase-url | bombase-url (in case of mode: 'tree') | `false` |  |
 | upload-url | upload-url (f.e. BOM-bar) | `false` |  |
-| ort-version | philipssoftware/ort version (in case of mode: 'ort') | `false` | 2021-05-31 |
+| ort-version | philipssoftware/ort version (in case of mode: 'ort') | `false` | 2021-11-24 |
 | ort-file | Specifies an ort-file to override ORT scanning in this action. (in case of mode: 'ort') | `false` |  |
 | tree | file with tree input (in case of mode: 'tree') | `false` |  |
 | format | format input (in case of mode: 'tree') | `false` |  |
@@ -79,10 +79,10 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
   - uses: actions/checkout@v2
   - uses: actions/setup-java@v1
     with:
-      java-version: '11.0.1'
+      java-version: '11.0.13'
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.8.1
+    uses: philips-software/spdx-action@v0.9.1.1
     with:
       project: my-project
       mode: ort
@@ -97,13 +97,13 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
   - uses: actions/checkout@v2
   - uses: actions/setup-java@v1
     with:
-      java-version: '11.0.1'
+      java-version: '11.0.13'
   - name: Create tree
     run: |
       npm list --all --production > npm-dependencies.txt
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.8.1
+    uses: philips-software/spdx-action@v0.9.1.1
      with:
       project: my-project
       mode: 'tree'
@@ -121,10 +121,10 @@ Make sure you have a proper `.spdx-builder.yml` file in your project.
   - uses: actions/checkout@v2
   - uses: actions/setup-java@v1
     with:
-      java-version: '11.0.1'
+      java-version: '11.0.13'
   - name: Create spdx-file
     id: spdx-builder
-    uses: philips-software/spdx-action@v0.8.1
+    uses: philips-software/spdx-action@v0.9.1.1
     with:
       project: my-project
       mode: 'blackduck'
