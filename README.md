@@ -35,7 +35,7 @@ Get SPDX license overview
 | scanner-url | scanner-url (license-scanner) | `false` |  |
 | bombase-url | bombase-url (in case of mode: 'tree') | `false` |  |
 | upload-url | upload-url (f.e. BOM-bar) | `false` |  |
-| ort-version | philipssoftware/ort version (in case of mode: 'ort') | `false` | 2021-05-31 |
+| ort-version | philipssoftware/ort version (in case of mode: 'ort') | `false` | 2021-11-24 |
 | ort-file | Specifies an ort-file to override ORT scanning in this action. (in case of mode: 'ort') | `false` |  |
 | tree | file with tree input (in case of mode: 'tree') | `false` |  |
 | format | format input (in case of mode: 'tree') | `false` |  |
